@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Movie, Favorite  } from "../types";
 import { fetchSearchQuery } from "../api/api";
-import { Input, List, Dropdown, Menu } from 'antd';
+import { Input, List, Menu } from 'antd';
 import './components.css'
+import Dropdown from "./Dropdown";
+import { useFavorites } from "./FavoritesContext";
 
 const Navbar: React.FC = () => {
    const [searchQuery, setSearchQuery] = useState<string>('');
    const [searchResults, setSearchResults] = useState<Movie[]>([]);
-   const [favorites, setFavorites] = useState<Favorite[]>([]);
+   const { favorites } = useFavorites();
 
    useEffect(() => {
-      const storedFavorites = localStorage.getItem('favorites');
-      if (storedFavorites) {
-         setFavorites(JSON.parse(storedFavorites));
-      }
-
       const fetchData = async () => {
          if (searchQuery.trim() === '') {
             setSearchResults([]);
@@ -34,17 +31,7 @@ const Navbar: React.FC = () => {
 
    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchQuery(e.target.value);
-   }
-
-   const menu = (
-      <Menu>
-         {favorites.map((favorite, index) => (
-            <Menu.Item key={index}>
-               {favorite.title}
-            </Menu.Item>
-         ))}
-      </Menu>
-   );
+   };
 
    return (
       <div className="navbar">
@@ -67,11 +54,7 @@ const Navbar: React.FC = () => {
                   />
                }
             </div>
-               <Dropdown overlay={menu} trigger={['click']}>
-                  <a className="ant-dropdown-link" onClick={(e) => e.preventDefault()}>
-                     Favorites
-                  </a>
-               </Dropdown>
+               <Dropdown name="Favorites" items={favorites}/>
             </div>
       </div>
    );

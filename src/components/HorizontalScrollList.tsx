@@ -8,6 +8,8 @@ import { BsBookmark, BsBookmarkFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import './components.css';
 import { Button, Card, Image } from 'antd';
+import { useFavorites } from './FavoritesContext';
+import { Favorite } from '../types';
 
 interface HorizontalScrollListProps {
     title: string;
@@ -15,23 +17,19 @@ interface HorizontalScrollListProps {
 }
 
 const HorizontalScrollList: React.FC<HorizontalScrollListProps> = ({ title, movies }) => {
-    const [favorites, setFavorites] = useState<{ id:string; title: string }[]>([]);
+    const { addFavorite, isFavorite, removeFavorite } = useFavorites();
 
-    const toggleFavorite = (movieId: string, movieTitle: string) => {
+    const toggleFavorite = (movieId: number, movieTitle: string) => {
         if (isFavorite(movieId)) {
-            const updatedFavorites = favorites.filter((fav) => fav.id !== movieId);
-            setFavorites(updatedFavorites);
+            removeFavorite(movieId);
         } else {
-            const updatedFavorites = [...favorites, { id: movieId, title: movieTitle }];
-            setFavorites(updatedFavorites);
+            const movie: Favorite = {
+                id: movieId,
+                title: movieTitle,
+            };
+            addFavorite(movie);
         }
     };
-
-    useEffect(() => {
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-    }, [favorites]);
-
-    const isFavorite = (movieId: string) => favorites.some((fav) => fav.id === movieId);
     
     const settings = {
         infinite: false,
@@ -46,11 +44,11 @@ const HorizontalScrollList: React.FC<HorizontalScrollListProps> = ({ title, movi
             <Slider {...settings}>
                 {movies.map((movie) => (
                    <div key={movie.id} className='movie-poster'>
-                        <Card>
+                        <Card className='card'>
                             <Button
-                                onClick={() => toggleFavorite(movie.id.toString(), movie.title)}
+                                onClick={() => toggleFavorite(movie.id, movie.title)}
                             >
-                                {isFavorite(movie.id.toString()) ? (
+                                {isFavorite(movie.id) ? (
                                     <BsBookmarkFill size={20} color='gold' />
                                 ) : (
                                     <BsBookmark size={20} />

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Filters, Genre } from "../types";
 import './components.css';
 import { fetchGenres } from "../api/api";
-import { Button, Dropdown, Input, Slider } from 'antd';
+import { Button, Dropdown, Space, Slider } from 'antd';
+import type { MenuProps } from 'antd'
 
 interface FilterProps {
    onSearch: (filters: Filters) => void;
@@ -12,6 +13,23 @@ interface FilterProps {
 const Filter: React.FC<FilterProps> = ({ onSearch, onReset }) => {
    const [filters, setFilters] = useState<Filters>({});
    const [genres, setGenres] = useState<Genre[]>([]);
+
+   const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: 
+        <div>
+          <label>Select Year:</label>
+          <Slider
+            min={1900}
+            max={2023}
+            step={1}
+            value={filters.year || 1900}
+            onChange={(value) => setFilters({ ...filters, year: value })}
+          />
+        </div>
+    },
+  ];
 
    useEffect(() => {
       const fetchData = async () => {
@@ -38,21 +56,9 @@ const Filter: React.FC<FilterProps> = ({ onSearch, onReset }) => {
    return (
       <div className="filter">
         <h2>Filters:</h2>
-        <div className="filter-buttons">
+        <Space>
           <Dropdown
-            overlay={
-              <div className="p-3">
-                <label>Select Year:</label>
-                <Slider
-                  min={1900}
-                  max={2023}
-                  step={1}
-                  value={filters.year || 1900}
-                  onChange={(value) => setFilters({ ...filters, year: value })}
-                />
-                <span>{filters.year}</span>
-              </div>
-            }
+            menu={{ items }}
             trigger={['click']}
           >
             <Button>Year</Button>
@@ -98,7 +104,7 @@ const Filter: React.FC<FilterProps> = ({ onSearch, onReset }) => {
           <Button onClick={handleReset}>
             Reset
           </Button>
-        </div>
+        </Space>
       </div>
     );
 
