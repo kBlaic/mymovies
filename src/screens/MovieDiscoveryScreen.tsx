@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Navbar from "../components/Navbar";
-import HorizontalScrollList from "../components/HorizontalScrollList";
+import HorizontalScrollMovies from "../components/HorizontalScrollMovies";
 import { Movie, Filters, Genre } from "../types";
 import Filter from "../components/Filter";
 import { fetchGenres, fetchMovies, tmdbBaseUrl, apiKey, fetchQuery } from "../api/api";
+import MovieCard from "../components/MovieCard";
 
 interface PopularMoviesByGenre {
    [key: string]: Movie[];
@@ -73,9 +74,16 @@ const MovieDiscoveryScreen: React.FC = () => {
          <Navbar />
          <h1>Discover Movies</h1>
          <Filter onSearch={onSearch} onReset={handleResetFilters}/>
-         <HorizontalScrollList title="Newest Movies" movies={newestMovies} />
+         {filterMovies.length > 0 &&
+            <div>
+               {filterMovies.map((movie) => (
+                  <MovieCard key={movie.id} movie={movie} />
+               ))}
+            </div>
+         }
+         <HorizontalScrollMovies title="Newest Movies" movies={newestMovies} />
          {genres.map(genre => (
-         <HorizontalScrollList key={genre.id} title={`Popular ${genre.name} Movies`} movies={popularMoviesByGenre[genre.name] || []} />
+            <HorizontalScrollMovies key={genre.id} title={`Popular ${genre.name} Movies`} movies={popularMoviesByGenre[genre.name] || []} />
          ))}
       </div>
    );

@@ -1,0 +1,15 @@
+.navbar {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   align-items: center;
+}
+
+.navbar-main {
+   display: flex;
+   flex-direction: row;
+}
+
+.navbar-favorites {
+   margin-right: 10px;
+}

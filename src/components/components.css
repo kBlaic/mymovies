@@ -1,23 +1,5 @@
-.navbar {
-   display: flex;
-   flex-direction: row;
-   justify-content: space-between;
-   align-items: center;
-}
-
-.navbarPartTwo {
-   display: flex;
-   flex-direction: row;
-   justify-content: end;
-   align-items: center;
-}
-
 .filter {
    align-items: center;
    justify-content:flex-start;
 }
 
-.p-3 {
-   background-color: black;
-   color: white;
-}

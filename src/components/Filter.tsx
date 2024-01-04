@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Filters, Genre } from "../types";
 import './components.css';
 import { fetchGenres } from "../api/api";
-import { Button, Dropdown, Space, Slider } from 'antd';
-import type { MenuProps } from 'antd'
+import { Button, Space, Slider } from 'antd';
+import Dropdown from "./Dropdown";
 
 interface FilterProps {
    onSearch: (filters: Filters) => void;
@@ -13,23 +13,6 @@ interface FilterProps {
 const Filter: React.FC<FilterProps> = ({ onSearch, onReset }) => {
    const [filters, setFilters] = useState<Filters>({});
    const [genres, setGenres] = useState<Genre[]>([]);
-
-   const items: MenuProps['items'] = [
-    {
-      key: '1',
-      label: 
-        <div>
-          <label>Select Year:</label>
-          <Slider
-            min={1900}
-            max={2023}
-            step={1}
-            value={filters.year || 1900}
-            onChange={(value) => setFilters({ ...filters, year: value })}
-          />
-        </div>
-    },
-  ];
 
    useEffect(() => {
       const fetchData = async () => {
@@ -58,13 +41,20 @@ const Filter: React.FC<FilterProps> = ({ onSearch, onReset }) => {
         <h2>Filters:</h2>
         <Space>
           <Dropdown
-            menu={{ items }}
-            trigger={['click']}
-          >
-            <Button>Year</Button>
-          </Dropdown>
+            name="Year"
+            component={
+              <Slider
+                min={1900}
+                max={2023}
+                step={1}
+                value={filters.year || 1900}
+                onChange={(value) => setFilters({ ...filters, year: value })}
+              />
+            } 
+          />
           <Dropdown
-            overlay={
+            name="Genres"
+            component={
               <div>
                 {genres.map(genre => (
                   <Button
@@ -77,27 +67,19 @@ const Filter: React.FC<FilterProps> = ({ onSearch, onReset }) => {
                 ))}
               </div>
             }
-            trigger={['click']}
-          >
-            <Button>Genres</Button>
-          </Dropdown>
+          />
           <Dropdown
-            overlay={
-              <div className="p-3">
-                <label>Select Rating:</label>
-                <Slider
-                  min={1}
-                  max={10}
-                  step={0.1}
-                  value={filters.rating || 1}
-                  onChange={(value) => setFilters({ ...filters, rating: value })}
-                />
-              </div>
+            name="Rating"
+            component={
+              <Slider
+                min={1}
+                max={10}
+                step={0.1}
+                value={filters.rating || 1}
+                onChange={(value) => setFilters({ ...filters, rating: value })}
+              />
             }
-            trigger={['click']}
-          >
-            <Button>Rating</Button>
-          </Dropdown>
+          />
           <Button onClick={handleFilterChange}>
             Search
           </Button>

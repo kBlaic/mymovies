@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Movie, Favorite  } from "../types";
+import { Movie } from "../types";
 import { fetchSearchQuery } from "../api/api";
-import { Input, List, Menu } from 'antd';
-import './components.css'
+import { Input, List } from 'antd';
+import './Navbar.css'
 import Dropdown from "./Dropdown";
 import { useFavorites } from "./FavoritesContext";
+import { Link } from 'react-router-dom';
 
 const Navbar: React.FC = () => {
    const [searchQuery, setSearchQuery] = useState<string>('');
@@ -35,27 +36,41 @@ const Navbar: React.FC = () => {
 
    return (
       <div className="navbar">
-         <h2>MyMovies</h2>
-         <div className="navbarPartTwo">
-            <div>
+         <h1>MyMovies</h1>
+         <div className="navbar-main">
+            <div className="navbar-favorites">
+               <Dropdown name="Favorites" items={favorites}/>
+            </div>
+            <div style={{ position: 'relative' }}>
                <Input
-                  style={{ width: '50vw'}}
+                  style={{ width: '25vw'}}
                   type="text"
                   placeholder="Enter movie name"
                   value={searchQuery}
                   onChange={handleInputChange}
                />
                {searchResults.length !== 0 &&
-               <List
-                  dataSource={searchResults}
-                  renderItem={(movie) => (
-                     <List.Item key={movie.id}>{movie.title}</List.Item>
-                  )}
+               <div style={{ position: 'absolute', 
+                              top: '101%', 
+                              left: 5,
+                              right: 5, 
+                              zIndex: 1,
+                              borderRadius: '5px',
+                              background: "white" }}>
+                  <List
+                     bordered
+                     dataSource={searchResults}
+                     renderItem={(movie) => (
+                        <Link to={`/movie/${movie.id}`}>
+                           <List.Item key={movie.id}>{movie.title}</List.Item>
+                        </Link>
+                        
+                     )}
                   />
+               </div>
                }
             </div>
-               <Dropdown name="Favorites" items={favorites}/>
-            </div>
+         </div>
       </div>
    );
 };

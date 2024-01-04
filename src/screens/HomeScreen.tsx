@@ -3,7 +3,7 @@ import { Movie } from '../types';
 import { fetchMovies } from "../api/api";
 import Navbar from "../components/Navbar";
 import HeroSection from "../components/HeroSection";
-import HorizontalScrollList from "../components/HorizontalScrollList";
+import HorizontalScrollList from "../components/HorizontalScrollMovies";
 
 const HomeScreen: React.FC = () => {
    const [nowPlaying, setNowPlaying] = useState<Movie[]>([]);

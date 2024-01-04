@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, ReactNode } from "react";
 import './Dropdown.css';
 import { Favorite } from "../types";
+import { Button } from "antd";
 
 interface DropdownProps {
    name: string;
-   items: Favorite[];
+   items?: Favorite[];
+   component?: ReactNode;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ name, items }) => {
+const Dropdown: React.FC<DropdownProps> = ({ name, items, component }) => {
    const [isOpen, setIsOpen] = useState(false);
 
    const handleToggle = () => {
@@ -20,12 +22,12 @@ const Dropdown: React.FC<DropdownProps> = ({ name, items }) => {
 
    return (
       <div className="dropdown">
-         <button className="dropdown-toggle" onClick={handleToggle}>
+         <Button className="dropdown-toggle" onClick={handleToggle}>
             {name}
-         </button>
+         </Button>
          {isOpen && (
             <div className="dropdown-menu">
-               {items.map((item) => (
+               {items && items.map((item) => (
                   <div
                      key={item.id}
                      className="dropdown-item"
@@ -34,6 +36,11 @@ const Dropdown: React.FC<DropdownProps> = ({ name, items }) => {
                      {item.title}
                   </div>
                ))}
+               {component && !items && (
+                  <div className="dropdown-component">
+                     {component}
+                  </div>
+               )}
             </div>
          )}
       </div>
