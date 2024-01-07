@@ -1,0 +1,17 @@
+.movie-card {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: space-around;
+}
+
+.details {
+   text-align: center;
+}
+
+.details-lists {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   text-align: justify;
+}

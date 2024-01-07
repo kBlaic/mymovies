@@ -1,0 +1,15 @@
+.card {
+   background-color: black;
+   text-align: center;
+   padding-top: 10px;
+}
+
+.card-button {
+   background-color: black;
+   color: white;
+   border: 0px;
+}
+
+.description {
+   color: white;
+}

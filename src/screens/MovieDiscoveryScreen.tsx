@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar/Navbar";
 import HorizontalScrollMovies from "../components/HorizontalScrollMovies";
 import { Movie, Filters, Genre } from "../types";
-import Filter from "../components/Filter";
-import { fetchGenres, fetchMovies, tmdbBaseUrl, apiKey, fetchQuery } from "../api/api";
-import MovieCard from "../components/MovieCard";
+import Filter from "../components/Filter/Filter";
+import { fetchGenres, fetchMovies, tmdbBaseUrl, apiKey, fetchFilterQuery } from "../api/api";
+import MovieCard from "../components/MovieCard/MovieCard";
+import './screens.css';
 
 interface PopularMoviesByGenre {
    [key: string]: Movie[];
@@ -49,12 +50,12 @@ const MovieDiscoveryScreen: React.FC = () => {
 
       const queryParams: string[] = [];
       if (year) queryParams.push(`primary_release_year=${year}`);
-      if (genre) queryParams.push(`with_genres=${genre}`);
+      if (genre) queryParams.push(`with_genres=${genre.id}`);
       if (rating) queryParams.push(`vote_average.gte=${rating}`);
 
       const queryString = queryParams.length > 0 ? `&${queryParams.join('&')}` : '';
       try {
-         const movies = await fetchQuery(queryString);
+         const movies = await fetchFilterQuery(queryString);
          setFilterMovies(movies);
       } catch (error) {
          console.error(`Error fetching movies from query: `, error);
@@ -75,7 +76,7 @@ const MovieDiscoveryScreen: React.FC = () => {
          <h1>Discover Movies</h1>
          <Filter onSearch={onSearch} onReset={handleResetFilters}/>
          {filterMovies.length > 0 &&
-            <div>
+            <div className="movie-card">
                {filterMovies.map((movie) => (
                   <MovieCard key={movie.id} movie={movie} />
                ))}
@@ -83,7 +84,11 @@ const MovieDiscoveryScreen: React.FC = () => {
          }
          <HorizontalScrollMovies title="Newest Movies" movies={newestMovies} />
          {genres.map(genre => (
-            <HorizontalScrollMovies key={genre.id} title={`Popular ${genre.name} Movies`} movies={popularMoviesByGenre[genre.name] || []} />
+            <HorizontalScrollMovies 
+               key={genre.id} 
+               title={`Popular ${genre.name} Movies`} 
+               movies={popularMoviesByGenre[genre.name] || []} 
+            />
          ))}
       </div>
    );

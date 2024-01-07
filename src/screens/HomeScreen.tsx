@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Movie } from '../types';
 import { fetchMovies } from "../api/api";
-import Navbar from "../components/Navbar";
-import HeroSection from "../components/HeroSection";
+import Navbar from "../components/Navbar/Navbar";
+import HeroSection from "../components/HeroSection/HeroSection";
 import HorizontalScrollList from "../components/HorizontalScrollMovies";
 
 const HomeScreen: React.FC = () => {
@@ -37,6 +37,7 @@ const HomeScreen: React.FC = () => {
       <div>
          <Navbar />
          <HeroSection />
+         <h2>Search for new, popular and upcoming movies</h2>
          <HorizontalScrollList title="Now Playing Movies" movies={nowPlaying} />
          <HorizontalScrollList title="Popular Movies" movies={popular} />
          <HorizontalScrollList title="Top Rated Movies" movies={topRated} />

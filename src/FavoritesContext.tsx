@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, createContext, ReactNode } from "react";
-import { Favorite } from '../types';
+import { Favorite } from './types';
 
 interface FavoritesContextType {
    favorites: Favorite[];

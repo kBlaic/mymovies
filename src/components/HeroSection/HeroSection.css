@@ -1,0 +1,17 @@
+.hero-content {
+   text-align: center;
+   font-size: 30px;
+}
+
+.hero-button {
+   font-size: medium;
+   font-weight: bold;
+   height: 50px;
+   width: 190px;
+   border-radius: 10px;
+   background-color: gold;
+}
+
+.hero-button:hover {
+   background-color: rgb(241, 175, 7);
+}
